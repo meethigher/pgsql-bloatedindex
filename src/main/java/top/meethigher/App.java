@@ -24,17 +24,19 @@ public class App {
     }
 
 
-    private final Long num = 10000L;
+    private final Long operateNum = 10000L;
+
+    private final Long baseNum = 2000L;
 
     @Bean
     public BloatedIndexRunner bloatedIndexRunner(PGSizeQuery pgSizeQuery) {
-        return new InsertDeleteRunner(num, pgSizeQuery, "insertDelete");
+        return new InsertDeleteRunner(baseNum, operateNum, pgSizeQuery, "insertDelete");
     }
 
 
     @Bean
     public BloatedIndexRunner bloatedIndexRunner1(PGSizeQuery pgSizeQuery) {
-        return new UpdateRunner(num, pgSizeQuery, "update");
+        return new UpdateRunner(baseNum, operateNum, pgSizeQuery, "update");
     }
 
     @Bean

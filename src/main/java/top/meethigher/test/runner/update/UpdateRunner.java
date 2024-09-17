@@ -11,8 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class UpdateRunner extends BloatedIndexRunner {
 
 
-    public UpdateRunner(Long totalNum, PGSizeQuery pgSizeQuery, String name) {
-        super(totalNum, pgSizeQuery, name);
+    public UpdateRunner(Long startTotal, Long totalNum, PGSizeQuery pgSizeQuery, String name) {
+        super(startTotal, totalNum, pgSizeQuery, name);
     }
 
     @Override

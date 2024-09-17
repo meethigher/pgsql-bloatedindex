@@ -12,20 +12,25 @@ public abstract class BloatedIndexRunner implements CommandLineRunner {
 
     private final PGSizeQuery pgSizeQuery;
 
-    private final Integer startTotal = 2000;
+    private final Long startTotal;
 
     private Long startIndexSize = 0L;
 
     private Long startDataSize = 0L;
 
+    private Long startDeadTup = 0L;
+
     private Long endIndexSize = 0L;
 
     private Long endDataSize = 0L;
 
+    private Long endDeadTup = 0L;
+
     private final String name;
 
 
-    protected BloatedIndexRunner(Long totalNum, PGSizeQuery pgSizeQuery, String name) {
+    protected BloatedIndexRunner(Long startTotal, Long totalNum, PGSizeQuery pgSizeQuery, String name) {
+        this.startTotal = startTotal;
         this.totalNum = totalNum;
         this.pgSizeQuery = pgSizeQuery;
         this.name = name;
@@ -68,7 +73,8 @@ public abstract class BloatedIndexRunner implements CommandLineRunner {
         setStartIndexSize(indexesSize.getSize());
         PGSizeQuery.PGSize dataSize = getPgSizeQuery().getDataSize("test_data");
         setStartDataSize(dataSize.getSize());
-        log.info("startIndexSize:{},startDataSize:{}", indexesSize.getPrettySize(), dataSize.getPrettySize());
+        setStartDeadTup(getPgSizeQuery().getDeadTup("test_data"));
+        log.info("startIndexSize:{},startDataSize:{},startDeadTup:{}", indexesSize.getPrettySize(), dataSize.getPrettySize(), getStartDeadTup());
     }
 
     public void runToEnd() {
@@ -80,9 +86,8 @@ public abstract class BloatedIndexRunner implements CommandLineRunner {
         setStartIndexSize(indexesSize.getSize());
         PGSizeQuery.PGSize dataSize = getPgSizeQuery().getDataSize("test_data");
         setEndDataSize(dataSize.getSize());
-        log.info("endIndexSize:{},endDataSize:{}", indexesSize.getPrettySize(), dataSize.getPrettySize());
-        log.info("deadTup:{}", getPgSizeQuery().getDeadTup("test_data"));
-
+        setEndDeadTup(getPgSizeQuery().getDeadTup("test_data"));
+        log.info("endIndexSize:{},endDataSize:{},endDeadTup:{}", indexesSize.getPrettySize(), dataSize.getPrettySize(), getEndDeadTup());
     }
 
     public abstract void execute(long index);
@@ -96,40 +101,56 @@ public abstract class BloatedIndexRunner implements CommandLineRunner {
         return pgSizeQuery;
     }
 
-    public Long getStartIndexSize() {
-        return startIndexSize;
+    public Long getStartTotal() {
+        return startTotal;
     }
 
-    public Long getEndIndexSize() {
-        return endIndexSize;
+    public Long getStartIndexSize() {
+        return startIndexSize;
     }
 
     public void setStartIndexSize(Long startIndexSize) {
         this.startIndexSize = startIndexSize;
     }
 
-    public void setEndIndexSize(Long endIndexSize) {
-        this.endIndexSize = endIndexSize;
-    }
-
     public Long getStartDataSize() {
         return startDataSize;
-    }
-
-    public Long getEndDataSize() {
-        return endDataSize;
     }
 
     public void setStartDataSize(Long startDataSize) {
         this.startDataSize = startDataSize;
     }
 
+    public Long getStartDeadTup() {
+        return startDeadTup;
+    }
+
+    public void setStartDeadTup(Long startDeadTup) {
+        this.startDeadTup = startDeadTup;
+    }
+
+    public Long getEndIndexSize() {
+        return endIndexSize;
+    }
+
+    public void setEndIndexSize(Long endIndexSize) {
+        this.endIndexSize = endIndexSize;
+    }
+
+    public Long getEndDataSize() {
+        return endDataSize;
+    }
+
     public void setEndDataSize(Long endDataSize) {
         this.endDataSize = endDataSize;
     }
 
-    public Integer getStartTotal() {
-        return startTotal;
+    public Long getEndDeadTup() {
+        return endDeadTup;
+    }
+
+    public void setEndDeadTup(Long endDeadTup) {
+        this.endDeadTup = endDeadTup;
     }
 
     public String getName() {

@@ -9,8 +9,8 @@ import top.meethigher.test.utils.PGSizeQuery;
 public class InsertDeleteRunner extends BloatedIndexRunner {
 
 
-    public InsertDeleteRunner(Long totalNum, PGSizeQuery pgSizeQuery, String name) {
-        super(totalNum, pgSizeQuery, name);
+    public InsertDeleteRunner(Long startTotal, Long totalNum, PGSizeQuery pgSizeQuery, String name) {
+        super(startTotal, totalNum, pgSizeQuery, name);
     }
 
     @Override

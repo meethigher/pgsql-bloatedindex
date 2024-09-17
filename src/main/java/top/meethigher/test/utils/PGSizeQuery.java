@@ -47,7 +47,11 @@ public class PGSizeQuery {
     }
 
     public Long getDeadTup(String tableName) {
-        return jdbcTemplate.queryForObject(" select n_dead_tup from pg_stat_user_tables where n_dead_tup > 0 and relname= ?", Long.class, tableName);
+        try {
+            return jdbcTemplate.queryForObject(" select n_dead_tup from pg_stat_user_tables where n_dead_tup > 0 and relname= ?", Long.class, tableName);
+        } catch (Exception e) {
+            return 0L;
+        }
 
     }
 
